@@ -23,11 +23,11 @@ class Benchmark:
 
     def stop(self):
         self.end_time = datetime.datetime.now()
-        self.total_seconds = self.seconds_to_human_readable((self.begin_time - self.end_time).seconds)
+        self.total_seconds = (self.end_time - self.begin_time).seconds
 
     def end(self):
         self.end_time = datetime.datetime.now()
-        self.total_seconds = self.seconds_to_human_readable((self.begin_time - self.end_time).seconds)
+        self.total_seconds = (self.end_time - self.begin_time).seconds
 
     def set_weeks(self,weeks):
         self.weeks = weeks
@@ -89,9 +89,11 @@ class Benchmark:
             ans = ''
 
         # I didn't want changes to total_seconds affecting seconds
-        total_seconds = seconds + 1
-        total_seconds = total_seconds - 1
-        print("start: " + str(self.total_seconds))
+        counter = 0
+        while(counter < self.total_seconds):
+            counter += 1
+
+        total_seconds = counter
 
         # Weeks
         weeks = int(total_seconds // 604800)
@@ -104,7 +106,6 @@ class Benchmark:
         self.set_weeks(weeks)
 
         total_seconds = total_seconds - (weeks * 604800)
-        print("1: " + str(total_seconds))
 
         # Days
         days = int(total_seconds // 86400)
@@ -117,7 +118,6 @@ class Benchmark:
         self.set_days(days)
 
         total_seconds = total_seconds - (days * 86400)
-        print("2: " + str(total_seconds))
 
         # Hours
         hours = int(total_seconds // 3600)
@@ -130,7 +130,6 @@ class Benchmark:
         self.set_hours(hours)
 
         total_seconds = total_seconds - (hours * 3600)
-        print("3: " + str(total_seconds))
 
         # Minutes
         minutes = int(total_seconds // 60)
@@ -143,7 +142,6 @@ class Benchmark:
         self.set_minutes(minutes)
 
         total_seconds = int(total_seconds - (minutes * 60))
-        print("4: " + str(total_seconds))
 
         # Seconds
         if (total_seconds == 0):
@@ -153,7 +151,6 @@ class Benchmark:
         else:
             ans += str(total_seconds) + ' Seconds'
         self.set_seconds(total_seconds)
-        print("5: " + str(total_seconds))
 
         if (return_type == 'string'):
             if (ans == ''):

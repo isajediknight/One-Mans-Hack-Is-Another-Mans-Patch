@@ -28,7 +28,7 @@ def parse_args(return_type='dict',print_debug=False,insert_values=[],required=[]
         2)  only tested on Python 3.4.3
     """
 
-    import sys, os
+    import sys, os, getpass
     from collections import namedtuple
 
     printed_yet = False
@@ -59,8 +59,9 @@ def parse_args(return_type='dict',print_debug=False,insert_values=[],required=[]
             print("")
     
     # Add items to the commandline variable
-    for insert in insert_values:
-        sys.argv.append(insert)
+    if(len(insert_values) > 0):
+        for insert in insert_values:
+            sys.argv.append(insert)
 
     # If a required parameter is missing get it
     # !!!This does not validate the user entries!!!
