@@ -97,7 +97,8 @@ state='closed'
 sort='created'
 base='master'
 # Get open pull
-pulls = repo.get_pulls(state, sort, base)
+#pulls = repo.get_pulls(state, sort, base)
+pulls = repo.get_pull(6570)
 
 result_type = 'unknown'
 if("<class 'github.PaginatedList.PaginatedList'>" == str(type(pulls))):
@@ -115,7 +116,7 @@ if(result_type == 'PaginatedList'):
 
 #print("There are " + str(len(pulls)) + " " + state + " Pull Requests in " + repo_name)
 
-#print(pulls[0])
+print(pulls[0])
 
 runtime.stop()
 print("Program Runtime: "+runtime.seconds_to_human_readable(runtime.get_seconds()))
