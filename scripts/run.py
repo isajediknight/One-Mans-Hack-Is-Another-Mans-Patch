@@ -1,4 +1,9 @@
 
+# HOW TO RUN!
+# python3 run.py -user your-user -password your-password
+# At the moment no calls requrie credentials so just run:
+# python3 run.py -user abc -password 123
+
 # Default Modules
 import datetime,time,os,sys
 
@@ -106,8 +111,9 @@ if("<class 'github.PaginatedList.PaginatedList'>" == str(type(pulls))):
     result_type = 'PaginatedList'
     final_paginated_page = int(pulls._getLastPageUrl().split("page=")[1])
 else:
-    print("There are " + str(len(pulls)) + " " + state + " Pull Requests in " + repo_name)
+    #print("There are " + str(len(pulls)) + " " + state + " Pull Requests in " + repo_name)
     result_type = 'list'
+    print(pulls)
 
 if(result_type == 'PaginatedList'):
     one_result = pulls.get_page(0)
@@ -115,8 +121,6 @@ if(result_type == 'PaginatedList'):
     final_paginated_page = 0
 
 #print("There are " + str(len(pulls)) + " " + state + " Pull Requests in " + repo_name)
-
-print(pulls[0])
 
 runtime.stop()
 print("Program Runtime: "+runtime.seconds_to_human_readable(runtime.get_seconds()))
