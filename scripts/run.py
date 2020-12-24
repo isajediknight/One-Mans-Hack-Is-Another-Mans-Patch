@@ -86,39 +86,58 @@ runtime = Benchmark()
 # To Debug: parse_args('dict',True)
 my_args = parse_args('dict',False,[],['-user','-password'],False,['-password'])
 if('-user' in list(my_args.keys())):
-    user = my_args['-user'].value
+    user_from_commandline = my_args['-user'].value
 
 if ('-password' in list(my_args.keys())):
-    password = my_args['-password'].value
+    password_from_commandline = my_args['-password'].value
 
-g = Github(user, password)
+if ('-token' in list(my_args.keys())):
+    token_from_commandline = my_args['-token'].value
+
+#https://api.github.com/repos/monero-project/monero/pulls/6570
+g = Github(base_url="https://api.github.com/", login_or_token=token_from_commandline)
+
+#g = Github(login_or_token='token_bla_bla', base_url='https://github.company.com/api/v3')
+
+###g = Github(user_from_commandline.strip(),password_from_commandline.strip())
+u = g.get_user()
+#print(u)
+
+print(u)
+#print(u.login)
+sys.exit()
 #monero-project/monero
 
 #repo = g.get_repo("PyGithub/PyGithub")
 repo_name = "monero-project/monero"
 repo = g.get_repo(repo_name)
 
-state='closed'
+state='closed'#'open'#closed
 sort='created'
 base='master'
 # Get open pull
-#pulls = repo.get_pulls(state, sort, base)
-pulls = repo.get_pull(6570)
+pulls = repo.get_pulls(state, sort, base)
+#pulls = repo.get_pull(6570)
 
 result_type = 'unknown'
 if("<class 'github.PaginatedList.PaginatedList'>" == str(type(pulls))):
     print("There are " + str(pulls.totalCount) + " " + state + " Pull Requests in " + repo_name)
     result_type = 'PaginatedList'
-    final_paginated_page = int(pulls._getLastPageUrl().split("page=")[1])
+    #final_paginated_page = int(pulls._getLastPageUrl().split("page=")[1])
+    outfile = open(OUTPUTS_DIR + state + '_' + sort + '_' + base + '_pull_requests.tab','w')
+    outfile.write('Title\tPull_Request_Number\n')
+    for pull in pulls:
+        outfile.write(str(pull.title)+'\t'+str(pull.number)+'\n')
+    outfile.close()
 else:
     #print("There are " + str(len(pulls)) + " " + state + " Pull Requests in " + repo_name)
     result_type = 'list'
     print(pulls)
 
-if(result_type == 'PaginatedList'):
-    one_result = pulls.get_page(0)
-    print(str(pulls._getLastPageUrl().split("page=")[1]))
-    final_paginated_page = 0
+#if(result_type == 'PaginatedList'):
+#    one_result = pulls.get_page(0)
+#    print(str(pulls._getLastPageUrl().split("page=")[1]))
+#    final_paginated_page = 0
 
 #print("There are " + str(len(pulls)) + " " + state + " Pull Requests in " + repo_name)
 
