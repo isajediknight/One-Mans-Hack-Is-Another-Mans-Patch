@@ -77,7 +77,7 @@ from benchmark import *
 # Benchmark all the things
 runtime = Benchmark()
 
-
+colored = ColoredText()
 
 #chunks = {}
 #page = https.request(
@@ -94,17 +94,30 @@ runtime = Benchmark()
 #print(page.data)
 #json.loads(x)
 
+pull_request_start = 7142
+pull_request_end = pull_request_start + 49
+
 filename = OUTPUTS_DIR+'Monero_Pull_Request_Info.tab'
-ans = input("Would you like to wipe out the existing Pull Request File? (y/n)")
-if(ans=='y' or ans == 'Y'):
-    outfile=open(filename,'w')
-    header = 'Pull_Request_Number\tTitle\tCreated_At\tUpdated_At\tClosed_At\tMerged_At\tMerged\tMerged_By\tNumber_Of_Commits\tAdditions\tDeletions\tChanged_Files'
-    header += '\tPull_Request_State\tOriginal_Coder\tMerge_Commit_SHA\tMerge_Commit_SHA_URL\tHTML_URL\tDiff_URL\tPatch_URL\tIssue_URL\tCommits_URL\n'
-    outfile.write(header)
-    outfile.close()
-    del outfile
+print("Starting at: " + str(pull_request_start))
+print("Ending before: " + str(pull_request_end))
+ans = input("Proceed? : ")
+
+if(ans == 'y' or ans == 'Y'):
+    pass
 else:
-    print("Appending to: "+filename)
+    print("Exiting")
+    sys.exit()
+
+#ans = input("Would you like to wipe out the existing Pull Request File? (y/n)")
+#if(ans=='y' or ans == 'Y'):
+#    outfile=open(filename,'w')
+#    header = 'Pull_Request_Number\tTitle\tCreated_At\tUpdated_At\tClosed_At\tMerged_At\tMerged\tMerged_By\tNumber_Of_Commits\tAdditions\tDeletions\tChanged_Files'
+#    header += '\tPull_Request_State\tOriginal_Coder\tMerge_Commit_SHA\tMerge_Commit_SHA_URL\tHTML_URL\tDiff_URL\tPatch_URL\tIssue_URL\tCommits_URL\n'
+#    outfile.write(header)
+#    outfile.close()
+#    del outfile
+#else:
+#    print("Appending to: "+filename)
 
 outfile=open(filename,'a')
 my_method = 'GET'
@@ -117,7 +130,7 @@ error_file = open(OUTPUTS_DIR+'pull_request_errors.txt','a')
 # Setup the connection
 https = urllib3.PoolManager()
 
-for pull_request in range(1,7184):
+for pull_request in range(pull_request_start,pull_request_end):
     page = https.urlopen(method=my_method, url=my_url+str(pull_request), headers=my_headers)
     if(int(page.status) == 200):
         my_data = json.loads(page.data)
@@ -232,24 +245,25 @@ for pull_request in range(1,7184):
 
             outfile.write(string_to_write + '\n')
 
-            print(str(pull_request) + "\t: Found")
+            print(str(pull_request) + "\t: "+colored.cc("Found","green"))
             final_pull_request_processed = pull_request
         except:
             error_file.write(str(pull_request)+'\n')
-            print(str(pull_request) + "\t: Error")
+            print(str(pull_request) + "\t: "+colored.cc("Error","red"))
 
     elif(int(page.status) == 404):
-        print(str(pull_request) + "\t: Not Found")
+        print(str(pull_request) + "\t: "+colored.cc("Not Found","grey"))
 
     else:
         print(str(pull_request)+'\t: Final Pull Request Processed')
         break
 
     # Keep from getting banned
-    time.sleep(4)
+    #time.sleep(0.5)
 
 outfile.close()
 error_file.close()
 
 runtime.stop()
 print("Program Runtime: "+runtime.seconds_to_human_readable(runtime.get_seconds()))
+print("Next start: " + str(pull_request_end))
