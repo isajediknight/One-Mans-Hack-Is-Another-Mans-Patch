@@ -166,17 +166,27 @@ class Benchmark:
         if (convert_seconds == 0):
             pass
         elif (convert_seconds == 1):
-            ans += str(convert_seconds) + ' Second'
+            ans += str(convert_seconds) + ' Second '
             self.seconds_text = 'Second'
         else:
-            ans += str(convert_seconds) + ' Seconds'
+            ans += str(convert_seconds) + ' Seconds '
             self.seconds_text = 'Seconds'
         self.set_seconds(convert_seconds)
 
+        # Microseconds
+        if (self.microseconds == 0):
+            pass
+        elif (self.microseconds == 1):
+            ans += str(self.microseconds) + ' Microsecond'
+            self.microseconds_text = 'Microsecond'
+        else:
+            ans += str(self.microseconds) + ' Microseconds'
+            self.microseconds_text = 'Microseconds'
+
     def end(self):
         """
-                Stop the benchmark and calculate all the runtime
-                """
+        Stop the benchmark and calculate all the runtime
+        """
 
         # Stop the clock
         self.end_time = datetime.datetime.now()
@@ -255,12 +265,22 @@ class Benchmark:
         if (convert_seconds == 0):
             pass
         elif (convert_seconds == 1):
-            ans += str(convert_seconds) + ' Second'
+            ans += str(convert_seconds) + ' Second '
             self.seconds_text = 'Second'
         else:
-            ans += str(convert_seconds) + ' Seconds'
+            ans += str(convert_seconds) + ' Seconds '
             self.seconds_text = 'Seconds'
         self.set_seconds(convert_seconds)
+
+        # Microseconds
+        if (self.microseconds == 0):
+            pass
+        elif (self.microseconds == 1):
+            ans += str(self.microseconds) + ' Microsecond'
+            self.microseconds_text = 'Microsecond'
+        else:
+            ans += str(self.microseconds) + ' Microseconds'
+            self.microseconds_text = 'Microseconds'
 
     def set_microseconds(self,microseconds):
         self.microseconds = microseconds
@@ -359,7 +379,6 @@ class Benchmark:
         else:
             ans += str(days) + ' Days '
             days_text = 'Days'
-        set_days(days)
 
         convert_seconds = convert_seconds - (days * 86400)
 
@@ -393,11 +412,21 @@ class Benchmark:
         if (convert_seconds == 0):
             pass
         elif (convert_seconds == 1):
-            ans += str(convert_seconds) + ' Second'
+            ans += str(convert_seconds) + ' Second '
             seconds_text = 'Second'
         else:
-            ans += str(convert_seconds) + ' Seconds'
+            ans += str(convert_seconds) + ' Seconds '
             seconds_text = 'Seconds'
+        
+        # Microseconds
+        if (microseconds == 0):
+            pass
+        elif (microseconds == 1):
+            ans += str(microseconds) + ' Microsecond'
+            microseconds_text = 'Microsecond'
+        else:
+            ans += str(microseconds) + ' Microseconds'
+            microseconds_text = 'Microseconds'
 
         return ans
 
@@ -405,10 +434,26 @@ class Benchmark:
         """
         Returns a string of the elapsed time
         """
+
+        ans = ''
+
+        need_one_space = False
+
         if(self.boolean_running):
             return self.current_benchmark_without_stopping()
         else:
-            ans = self.weeks
+            if(self.weeks > 0):
+                ans += str(self.weeks) + ' ' + self.weeks_text + ' '
+            if(self.days > 0):
+                ans += str(self.days) + ' ' + self.days_text + ' '
+            if(self.hours > 0):
+                ans += str(self.hours) + ' ' + self.hours_text + ' '
+            if(self.minutes > 0):
+                ans += str(self.minutes) + ' ' + self.minutes_text + ' '
+            if(self.seconds > 0):
+                ans += str(self.seconds) + ' ' + self.seconds_text + ' '
+            ans += str(self.microseconds) + ' ' + self.microseconds_text
+        return ans
 
     def seconds_to_human_readable(self, seconds, return_type='string'):
         """
@@ -492,9 +537,9 @@ class Benchmark:
         if (total_seconds == 0):
             pass
         elif (total_seconds == 1):
-            ans += str(total_seconds) + ' Second'
+            ans += str(total_seconds) + ' Second '
         else:
-            ans += str(total_seconds) + ' Seconds'
+            ans += str(total_seconds) + ' Seconds '
         self.set_seconds(total_seconds)
 
         if (return_type == 'string'):
