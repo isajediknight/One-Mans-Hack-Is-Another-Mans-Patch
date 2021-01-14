@@ -131,7 +131,6 @@ if ('-final-pull-request' in list(my_args.keys())):
 # Configure the session
 session = requests.Session()
 session.auth=('token',token)
-session.auth=('token','98414cea3cb469746b24ed0fa088478ec590655d')
 
 # Validate session can connect
 connection_validation = session.get('https://api.github.com/user')
