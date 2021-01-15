@@ -1,5 +1,5 @@
 # HOW TO RUN!
-# python3 export_pull_requests.py -token YOURGITHUBTOKEN -output-filename try2.tab -first-pull-request 201 -final-pull-request 1000 -api-url https://api.github.com/repos/monero-project/monero/pulls/
+# python3 export_pull_requests.py -token YOURGITHUBTOKEN -output-filename try2.tab -first-pull-request 1 -final-pull-request 1000 -api-url https://api.github.com/repos/monero-project/monero/pulls/
 
 # Default Modules
 import datetime,time,os,sys,json,requests
@@ -97,7 +97,8 @@ colored_text = ColoredText(['datatype'], ['38;5;30m'])
 #print("")
 
 # To Debug: parse_args('dict',True)
-my_args = parse_args('dict',False,[],['-token','-output-filename','-first-pull-request','-final-pull-request','-api-url'],False,['-token'])#'-user' not needed?
+parameters = ['-token','-output-filename','-first-pull-request','-final-pull-request','-api-url','-delimeter']
+my_args = parse_args('dict',False,[],parameters,False,parameters)#'-user' not needed?
 #if('-user' in list(my_args.keys())):
 #    user = my_args['-user'].value
 
@@ -109,6 +110,9 @@ if ('-api-url' in list(my_args.keys())):
 
 if ('-output-filename' in list(my_args.keys())):
     output_filename = my_args['-output-filename'].value
+
+if ('-delimeter' in list(my_args.keys())):
+    delimeter = my_args['-delimeter'].value
 
 if ('-first-pull-request' in list(my_args.keys())):
     try:
@@ -154,8 +158,8 @@ error_file = open(OUTPUTS_DIR+'pull_request_errors_404.txt','a')
 
 if(not (os.path.isfile(OUTPUTS_DIR+output_filename))):
     temp_outfile = open(OUTPUTS_DIR+output_filename,'w')
-    string_to_write = 'Pull_Request_Number\tTitle\tCreated_At\tUpdated_At\tClosed_At\tMerged_At\tMerged\tMerged_By\tNumber_Of_Commits\tAdditions\tDeletions\tChanged_Files\tPull_Request_State\tOriginal_Coder\t'
-    string_to_write += 'Merge_Commit_SHA\tMerge_Commit_SHA_URL\tHTML_URL\tDiff_URL\tPatch_URL\tIssue_URL\tCommits_URL\n'
+    string_to_write = 'Pull_Request_Number'+delimeter+'Title'+delimeter+'Created_At'+delimeter+'Updated_At'+delimeter+'Closed_At'+delimeter+'Merged_At'+delimeter+'Merged'+delimeter+'Merged_By'+delimeter+'Number_Of_Commits'+delimeter+'Additions'+delimeter+'Deletions'+delimeter+'Changed_Files'+delimeter+'Pull_Request_State'+delimeter+'Original_Coder'+delimeter+''
+    string_to_write += 'Merge_Commit_SHA'+delimeter+'Merge_Commit_SHA_URL'+delimeter+'HTML_URL'+delimeter+'Diff_URL'+delimeter+'Patch_URL'+delimeter+'Issue_URL'+delimeter+'Commits_URL\n'
     temp_outfile.write(string_to_write)
     temp_outfile.close()
     del temp_outfile
@@ -184,183 +188,183 @@ for pull_request_number in range(first_pull_request,final_pull_request+1):
 
             if ('number' in my_data):
                 if (type(my_data['number']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['number']) + '\t'
+                    string_to_write += str(my_data['number']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('title' in my_data):
                 if (type(my_data['title']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['title']) + '\t'
+                    string_to_write += str(my_data['title']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('created_at' in my_data):
                 if (type(my_data['created_at']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['created_at']) + '\t'
+                    string_to_write += str(my_data['created_at']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('updated_at' in my_data):
                 if (type(my_data['updated_at']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['updated_at']) + '\t'
+                    string_to_write += str(my_data['updated_at']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('closed_at' in my_data):
                 if (type(my_data['closed_at']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['closed_at']) + '\t'
+                    string_to_write += str(my_data['closed_at']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('merged_at' in my_data):
                 if (type(my_data['merged_at']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['merged_at']) + '\t'
+                    string_to_write += str(my_data['merged_at']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('merged' in my_data):
                 if (type(my_data['merged']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['merged']) + '\t'
+                    string_to_write += str(my_data['merged']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('merged_by' in my_data):
                 if (type(my_data['merged_by']) != type(None)):
                     if ('login' in my_data['merged_by']):
                         if (type(my_data['merged_by']['login']) == type(None)):
-                            string_to_write += 'NULL\t'
+                            string_to_write += 'NULL'+delimeter
                         else:
-                            string_to_write += str(my_data['merged_by']['login']) + '\t'
+                            string_to_write += str(my_data['merged_by']['login']) + delimeter
                     else:
-                        string_to_write += 'NULL\t'
+                        string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('commits' in my_data):
                 if (type(my_data['commits']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['commits']) + '\t'
+                    string_to_write += str(my_data['commits']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('additions' in my_data):
                 if (type(my_data['additions']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['additions']) + '\t'
+                    string_to_write += str(my_data['additions']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('deletions' in my_data):
                 if (type(my_data['deletions']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['deletions']) + '\t'
+                    string_to_write += str(my_data['deletions']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('changed_files' in my_data):
                 if (type(my_data['changed_files']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['changed_files']) + '\t'
+                    string_to_write += str(my_data['changed_files']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('state' in my_data):
                 if (type(my_data['state']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['state']) + '\t'
+                    string_to_write += str(my_data['state']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('user' in my_data):
                 if (type(my_data['user']) != type(None)):
                     if ('login' in my_data['user']):
                         if (type(my_data['user']['login']) == type(None)):
-                            string_to_write += 'NULL\t'
+                            string_to_write += 'NULL'+delimeter
                         else:
-                            string_to_write += str(my_data['user']['login']) + '\t'
+                            string_to_write += str(my_data['user']['login']) + delimeter
                     else:
-                        string_to_write += 'NULL\t'
+                        string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('merge_commit_sha' in my_data):
                 if (type(my_data['merge_commit_sha']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['merge_commit_sha']) + '\t'
+                    string_to_write += str(my_data['merge_commit_sha']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('merge_commit_sha' in my_data):
                 if (type(my_data['merge_commit_sha']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += 'https://github.com/monero-project/monero/commit/' + str(my_data['merge_commit_sha']) + '\t'
+                    string_to_write += 'https://github.com/monero-project/monero/commit/' + str(my_data['merge_commit_sha']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('html_url' in my_data):
                 if (type(my_data['html_url']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['html_url']) + '\t'
+                    string_to_write += str(my_data['html_url']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('diff_url' in my_data):
                 if (type(my_data['diff_url']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['diff_url']) + '\t'
+                    string_to_write += str(my_data['diff_url']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('patch_url' in my_data):
                 if (type(my_data['patch_url']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['patch_url']) + '\t'
+                    string_to_write += str(my_data['patch_url']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('issue_url' in my_data):
                 if (type(my_data['issue_url']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['issue_url']) + '\t'
+                    string_to_write += str(my_data['issue_url']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             if ('commits_url' in my_data):
                 if (type(my_data['commits_url']) == type(None)):
-                    string_to_write += 'NULL\t'
+                    string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['commits_url']) + '\t'
+                    string_to_write += str(my_data['commits_url']) + delimeter
             else:
-                string_to_write += 'NULL\t'
+                string_to_write += 'NULL'+delimeter
 
             outfile.write(string_to_write + '\n')
 
