@@ -169,6 +169,8 @@ outfile = open(OUTPUTS_DIR+output_filename,'a')
 # Loop through pull requests
 for pull_request_number in range(first_pull_request,final_pull_request+1):
     api_pull = session.get(api_url+str(pull_request_number))
+    # Keeps us under the 5k requests per hour
+    time.sleep(1.5)
     if((api_pull.status_code != 200) and (api_pull.status_code != 404)):
         message = " [ "+ colored_text.cc('Error','red')+" Status Code " + colored_text.cc(str(api_pull.status_code),'blue')
         message += " for Pull Request " + colored_text.cc(str(pull_request_number),'blue') + " ]\n"
@@ -362,9 +364,9 @@ for pull_request_number in range(first_pull_request,final_pull_request+1):
                 if (type(my_data['commits_url']) == type(None)):
                     string_to_write += 'NULL'+delimeter
                 else:
-                    string_to_write += str(my_data['commits_url']) + delimeter
+                    string_to_write += str(my_data['commits_url'])
             else:
-                string_to_write += 'NULL'+delimeter
+                string_to_write += 'NULL'
 
             outfile.write(string_to_write + '\n')
 
