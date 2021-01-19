@@ -3,7 +3,7 @@ token = input("Token: ")
 session = requests.Session()
 session.auth = ('token',token.strip())
 connection_validation = session.get('https://api.github.com/user')
-if(int(connection_validation.status_code) == 200):
+if int(connection_validation.status_code) == 200:
     api_pull = session.get('https://api.github.com/repos/monero-project/monero/pulls/'+str(731))
     my_data = json.loads(api_pull.text)
     print('\nPull Request Number:\t' + str(my_data['number']) if 'number' in my_data else 'Pull Request Number:\tNot Found')
